@@ -19,13 +19,23 @@ intellij {
 
     plugins.set(
         listOf(
+            "android",
             "org.toml.lang:222.3739.16",
             "com.intellij.gradle",
+            "org.intellij.groovy",
             "org.jetbrains.idea.reposearch",
             "org.jetbrains.kotlin",
             "com.intellij.java"
         )
     )
+}
+
+tasks {
+    runIde {
+        // Absolute path to installed target 3.5 Android Studio to use as
+        // IDE Development Instance (the "Contents" directory is macOS specific):
+        ideDir.set(file("/Applications/Android Studio.app/Contents"))
+    }
 }
 
 tasks {
