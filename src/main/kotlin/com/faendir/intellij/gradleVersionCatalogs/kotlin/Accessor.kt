@@ -15,8 +15,6 @@ private const val VERSION_SUPPLIER = "org.gradle.api.internal.catalog.ExternalMo
 private const val BUNDLE_SUPPLIER = "org.gradle.api.internal.catalog.ExternalModuleDependencyFactory.BundleNotationSupplier"
 private const val PLUGIN_SUPPLIER = "org.gradle.api.internal.catalog.ExternalModuleDependencyFactory.PluginNotationSupplier"
 
-
-@Suppress("SpellCheckingInspection")
 data class Accessor(val element: PsiElement, val id: String, val type: VCElementType) {
     companion object {
         fun find(element: PsiElement): Accessor? {
@@ -24,6 +22,7 @@ data class Accessor(val element: PsiElement, val id: String, val type: VCElement
                 element.lastChild.firstChild.references
             } else element.lastChild.references
             val returnType = references.map { it.resolve() }.firstIsInstanceOrNull<PsiMethod>()?.returnType ?: return null
+            @Suppress("SpellCheckingInspection")
             val segments by lazy { element.text.replace(Regex("\\s+"), "").split(".").drop(1)
                 // e.g. libs.map.get3dmap() -> [libs, map, get3dmap()] -> [map, get3dmap()] -> [map, 3dmap]
                 .map {
