@@ -5,7 +5,7 @@ plugins {
     id("fr.brouillard.oss.gradle.jgitver") version "0.10.0-rc03"
 }
 
-group = "com.faendir"
+group = "com.5peak2me.plugin.idea"
 
 repositories {
     mavenCentral()
