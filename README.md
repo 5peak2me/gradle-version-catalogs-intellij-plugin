@@ -1,5 +1,12 @@
 # Gradle Version Catalogs IntelliJ Plugin
 
+### Forked from [gradle-version-catalogs-intellij-plugin](https://github.com/F43nd1r/gradle-version-catalogs-intellij-plugin)
+
+- Added support for custom TOML files
+- Added support for `build.gradle` files
+
+---
+
 Improved gradle version catalog support including
 
 - jump to usage/definition from/to versions.toml and build.gradle.kts
