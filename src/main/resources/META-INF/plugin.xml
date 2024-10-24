@@ -33,7 +33,6 @@
     <depends>com.intellij.modules.platform</depends>
     <depends>org.toml.lang</depends>
     <depends>com.intellij.gradle</depends>
-    <depends>org.intellij.groovy</depends>
     <depends>org.jetbrains.idea.reposearch</depends>
     <depends>org.jetbrains.kotlin</depends>
     <depends>com.intellij.java</depends>
@@ -101,8 +100,5 @@
         <codeInsight.inlayProvider
                 language="kotlin"
                 implementationClass="com.faendir.intellij.gradleVersionCatalogs.kotlin.inlayhints.VersionCatalogInlayHintsProvider" />
-<!--        <codeInsight.inlayProvider-->
-<!--                language="Groovy"-->
-<!--                implementationClass="com.faendir.intellij.gradleVersionCatalogs.groovy.inlayhints.VersionCatalogInlayHintsProvider" />-->
     </extensions>
 </idea-plugin>
