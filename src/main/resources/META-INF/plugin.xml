@@ -101,8 +101,8 @@
         <codeInsight.inlayProvider
                 language="kotlin"
                 implementationClass="com.faendir.intellij.gradleVersionCatalogs.kotlin.inlayhints.VersionCatalogInlayHintsProvider" />
-        <codeInsight.inlayProvider
-                language="Groovy"
-                implementationClass="com.faendir.intellij.gradleVersionCatalogs.groovy.inlayhints.VersionCatalogInlayHintsProvider" />
+<!--        <codeInsight.inlayProvider-->
+<!--                language="Groovy"-->
+<!--                implementationClass="com.faendir.intellij.gradleVersionCatalogs.groovy.inlayhints.VersionCatalogInlayHintsProvider" />-->
     </extensions>
 </idea-plugin>
