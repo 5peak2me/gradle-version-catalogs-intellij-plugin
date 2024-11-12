@@ -8,6 +8,7 @@
     "packages:react",
     "workarounds:all"
   ],
+  "forkProcessing": "enabled",
   "rangeStrategy": "pin",
   "packageRules": [
     {
