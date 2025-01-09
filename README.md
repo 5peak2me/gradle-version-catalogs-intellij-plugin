@@ -2,6 +2,7 @@
 
 ### Forked from [gradle-version-catalogs-intellij-plugin](https://github.com/F43nd1r/gradle-version-catalogs-intellij-plugin)
 
+- Support K2 mode
 - Added support for custom TOML files
 - Added support for `build.gradle` files
 
