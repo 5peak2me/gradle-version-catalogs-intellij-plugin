@@ -33,7 +33,7 @@ class VersionCatalogInlayHintsProvider : InlayHintsProvider<NoSettings> {
         if (file is KtFile && file.name == GradleConstants.KOTLIN_DSL_SCRIPT_NAME) {
             return object : FactoryInlayHintsCollector(editor) {
                 override fun collect(element: PsiElement, editor: Editor, sink: InlayHintsSink): Boolean {
-                    if (element.elementType is KtDotQualifiedExpressionElementType) {
+                    if (element.elementType is KtDotQualifiedExpressionElementType && element.nextSibling == null) {
                         val accessor = BuildGradleKtsPsiCache.findAccessor(element)
                         if (accessor != null && BuildGradleKtsPsiCache.findAccessor(element.parent) == null) {
                             val referencedElement = element.project.findInVersionsTomlKeyValues({ VersionsTomlPsiCache.getDefinitions(it, accessor.type) }, accessor.id)
