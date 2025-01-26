@@ -22,6 +22,8 @@ import javax.swing.JPanel
 @Suppress("UnstableApiUsage")
 class VersionCatalogInlayHintsProvider : InlayHintsProvider<NoSettings> {
 
+    private val elements = mutableListOf<String>()
+
     override val key: SettingsKey<NoSettings> = SettingsKey("group.names.gradle")
     override val name: String = "Gradle Version Catalog references"
     override val group: InlayGroup = InlayGroup.OTHER_GROUP
@@ -33,7 +35,8 @@ class VersionCatalogInlayHintsProvider : InlayHintsProvider<NoSettings> {
         if (file is KtFile && file.name == GradleConstants.KOTLIN_DSL_SCRIPT_NAME) {
             return object : FactoryInlayHintsCollector(editor) {
                 override fun collect(element: PsiElement, editor: Editor, sink: InlayHintsSink): Boolean {
-                    if (element.elementType is KtDotQualifiedExpressionElementType) {
+                    if (element.elementType is KtDotQualifiedExpressionElementType && !elements.contains(element.text)) {
+                        elements.add(element.text)
                         val accessor = BuildGradleKtsPsiCache.findAccessor(element)
                         if (accessor != null && BuildGradleKtsPsiCache.findAccessor(element.parent) == null) {
                             val referencedElement = element.project.findInVersionsTomlKeyValues({ VersionsTomlPsiCache.getDefinitions(it, accessor.type) }, accessor.id)
