@@ -108,7 +108,7 @@ class VersionCatalogInlayHintsProvider : InlayHintsProvider<NoSettings> {
                                 }?.value?.text?.unquote()
                             }
                         )
-                    ?.let { "$module:${it}" }
+                    ?.let { "$module:${it}" } ?: module
             }
         }
 
