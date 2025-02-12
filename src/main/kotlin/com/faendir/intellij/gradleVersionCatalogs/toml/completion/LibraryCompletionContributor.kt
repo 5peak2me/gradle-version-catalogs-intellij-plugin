@@ -74,7 +74,7 @@ class LibraryCompletionContributor : CompletionContributor() {
         cld: ConcurrentLinkedDeque<MavenRepositoryArtifactInfo>,
         handler: (MavenRepositoryArtifactInfo) -> Unit
     ) {
-        while (searchPromise.state == Promise.State.PENDING || !cld.isEmpty()) {
+        while (searchPromise.state == Promise.State.PENDING || cld.isNotEmpty()) {
             ProgressManager.checkCanceled()
             val item = cld.poll()
             if (item != null) {

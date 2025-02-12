@@ -17,7 +17,7 @@ class GotoCatalogDeclarationHandler : GotoDeclarationHandler {
             val expression = PsiTreeUtil.findFirstParent(sourceElement) {
                 try {
                     it.elementType is KtDotQualifiedExpressionElementType
-                } catch (e: Exception) {
+                } catch (_: Exception) {
                     false
                 }
             }
