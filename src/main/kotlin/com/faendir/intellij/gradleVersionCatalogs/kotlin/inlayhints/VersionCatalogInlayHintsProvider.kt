@@ -3,6 +3,7 @@ package com.faendir.intellij.gradleVersionCatalogs.kotlin.inlayhints
 import com.faendir.intellij.gradleVersionCatalogs.VCElementType
 import com.faendir.intellij.gradleVersionCatalogs.kotlin.cache.BuildGradleKtsPsiCache
 import com.faendir.intellij.gradleVersionCatalogs.kotlin.findInVersionsTomlKeyValues
+import com.faendir.intellij.gradleVersionCatalogs.kotlin.namespace
 import com.faendir.intellij.gradleVersionCatalogs.toml.cache.VersionsTomlPsiCache
 import com.faendir.intellij.gradleVersionCatalogs.toml.isVersionRef
 import com.faendir.intellij.gradleVersionCatalogs.toml.unquote
@@ -36,8 +37,10 @@ class VersionCatalogInlayHintsProvider : InlayHintsProvider<NoSettings> {
                     if (element.elementType is KtDotQualifiedExpressionElementType && element.nextSibling == null) {
                         val accessor = BuildGradleKtsPsiCache.findAccessor(element)
                         if (accessor != null && BuildGradleKtsPsiCache.findAccessor(element.parent) == null) {
-                            val referencedElement = element.project.findInVersionsTomlKeyValues({ VersionsTomlPsiCache.getDefinitions(it, accessor.type) }, accessor.id)
-                                .firstOrNull()
+                            val referencedElement = element.project.findInVersionsTomlKeyValues(
+                                { VersionsTomlPsiCache.getDefinitions(it, accessor.type) },
+                                accessor.id
+                            )[element.text.namespace]?.firstOrNull()
                             if (referencedElement != null) {
                                 val referencedValue = referencedElement.value
                                 if (referencedValue != null) {

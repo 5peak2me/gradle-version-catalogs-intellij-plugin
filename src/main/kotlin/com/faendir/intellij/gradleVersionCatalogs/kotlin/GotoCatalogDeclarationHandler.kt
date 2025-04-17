@@ -23,7 +23,7 @@ class GotoCatalogDeclarationHandler : GotoDeclarationHandler {
             }
             if (expression != null) {
                 BuildGradleKtsPsiCache.findAccessor(expression)?.run {
-                    return project.findInVersionsTomlKeyValues({ file -> VersionsTomlPsiCache.getDefinitions(file, type) }, id).toTypedArray()
+                    return project.findInVersionsTomlKeyValues({ file -> VersionsTomlPsiCache.getDefinitions(file, type) }, id)[element.text.namespace].orEmpty().toTypedArray()
                 }
             }
         }
