@@ -55,6 +55,26 @@ data class Accessor(val element: PsiElement, val id: String, val type: VCElement
             val id = (if (type != VCElementType.LIBRARY) segments.drop(1) else segments).joinToString("-")
             return Accessor(element, id, type)
         }
+
+        fun find2(element: PsiElement): Accessor? {
+            @Suppress("SpellCheckingInspection")
+            val segments by lazy { element.text.replace(Regex("\\s+"), "").split(".").drop(1)
+                // e.g. libs.map.get3dmap() -> [libs, map, get3dmap()] -> [map, get3dmap()] -> [map, 3dmap]
+                .map {
+                    it.applyIf(it.matches(Regex("^get.*\\(\\s*\\)$"))) {
+                        removePrefix("get").removeSuffix("()")
+                    }
+                }
+            }
+            val type = when {
+                VCElementType.VERSION.tableHeader in segments -> VCElementType.VERSION
+                VCElementType.BUNDLE.tableHeader in segments -> VCElementType.BUNDLE
+                VCElementType.PLUGIN.tableHeader in segments -> VCElementType.PLUGIN
+                else -> VCElementType.LIBRARY
+            }
+            val id = (if (type != VCElementType.LIBRARY) segments.drop(1) else segments).joinToString("-")
+            return Accessor(element, id, type)
+        }
     }
 }
 

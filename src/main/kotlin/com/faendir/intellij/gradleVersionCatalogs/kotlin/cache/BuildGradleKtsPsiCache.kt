@@ -25,5 +25,10 @@ object BuildGradleKtsPsiCache {
     fun getAccessors(file: KtFile, type: VCElementType) = getAccessors(file)[type].orEmpty()
 
     fun findAccessor(element: PsiElement) = getProjectPsiDependentCache(element) { Accessor.find(it) }
+
+    /**
+     * Find in Gradle File
+     */
+    fun findAccessor2(element: PsiElement) = getProjectPsiDependentCache(element) { Accessor.find2(it) }
 }
 
