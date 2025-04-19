@@ -1,5 +1,7 @@
 # Gradle Version Catalogs IntelliJ Plugin
 
+[![JetBrains Plugin Version](https://img.shields.io/jetbrains/plugin/v/25647-gradle-version-catalogs?label=Gradle%20Version%20Catalogs)](https://plugins.jetbrains.com/plugin/25647-gradle-version-catalogs)
+
 ### Forked from [gradle-version-catalogs-intellij-plugin](https://github.com/F43nd1r/gradle-version-catalogs-intellij-plugin)
 
 - Support K2 mode
@@ -16,7 +18,7 @@ Improved gradle version catalog support including
 
 # Download
 
-[IntelliJ Marketplace](https://plugins.jetbrains.com/plugin/20324-gradle-version-catalogs)
+[IntelliJ Marketplace](https://plugins.jetbrains.com/plugin/25647-gradle-version-catalogs)
 
 # Note on Future Development
 
