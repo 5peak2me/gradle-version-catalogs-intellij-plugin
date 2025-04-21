@@ -1,5 +1,6 @@
 package com.faendir.intellij.gradleVersionCatalogs.kotlin
 
+import com.google.common.base.CaseFormat
 import com.intellij.openapi.project.Project
 import com.intellij.openapi.vfs.VfsUtil
 import com.intellij.psi.search.FilenameIndex
@@ -24,7 +25,8 @@ fun Project.findInVersionsTomlKeyValues(getKeyValues: (TomlFile) -> List<TomlKey
         .filter { it.name.endsWith("versions.toml") }
         .map { it.toPsiFile(this) }
         .filterIsInstance<TomlFile>()
-        .flatMap { file -> getKeyValues(file).filter { it.key.textMatches(search) } }
+//        .flatMap { file -> getKeyValues(file).filter { it.key.textMatches(search) } }
+        .flatMap { file -> getKeyValues(file).filter { it.key.text.replace('_', '-') == search } }
         .groupBy { it.containingFile.name.namespace }
 }
 
