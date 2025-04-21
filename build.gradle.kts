@@ -17,13 +17,13 @@ repositories {
 // Configure Gradle IntelliJ Plugin
 // Read more: https://plugins.jetbrains.com/docs/intellij/tools-gradle-intellij-plugin.html
 intellij {
-    version.set("2022.2.1")
+    version.set("2022.3.1")
     type.set("IC")
 
     plugins.set(
         listOf(
             "android",
-            "org.toml.lang:222.3739.16",
+            "org.toml.lang",
             "com.intellij.gradle",
             "org.intellij.groovy",
             "org.jetbrains.idea.reposearch",
