@@ -35,7 +35,7 @@ class VersionCatalogInlayHintsProvider : InlayHintsProvider<NoSettings> {
             return object : FactoryInlayHintsCollector(editor) {
                 override fun collect(element: PsiElement, editor: Editor, sink: InlayHintsSink): Boolean {
                     if (element is GrReferenceExpression
-                                && (element.parent.nextSibling == null || element.parent.nextSibling is GrArgumentList)) {
+                                && (element.nextSibling == null || element.context is GrArgumentList)) {
                         val accessor = BuildGradleKtsPsiCache.findAccessor2(element)
                         if (accessor != null/* && BuildGradleKtsPsiCache.findAccessor(element.parent) == null*/) {
                             val referencedElement = element.project.findInVersionsTomlKeyValues(
