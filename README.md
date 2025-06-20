@@ -1,6 +1,7 @@
 # Gradle Version Catalogs IntelliJ Plugin
 
 [![JetBrains Plugin Version](https://img.shields.io/jetbrains/plugin/v/25647-gradle-version-catalogs?label=Gradle%20Version%20Catalogs)](https://plugins.jetbrains.com/plugin/25647-gradle-version-catalogs)
+[![Downloads](https://img.shields.io/jetbrains/plugin/d/25647.svg)](https://plugins.jetbrains.com/plugin/25647)
 
 ### Forked from [gradle-version-catalogs-intellij-plugin](https://github.com/F43nd1r/gradle-version-catalogs-intellij-plugin)
 
