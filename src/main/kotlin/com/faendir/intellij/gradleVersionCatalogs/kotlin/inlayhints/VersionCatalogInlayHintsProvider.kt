@@ -4,6 +4,7 @@ import com.faendir.intellij.gradleVersionCatalogs.VCElementType
 import com.faendir.intellij.gradleVersionCatalogs.kotlin.cache.BuildGradleKtsPsiCache
 import com.faendir.intellij.gradleVersionCatalogs.kotlin.findInVersionsTomlKeyValues
 import com.faendir.intellij.gradleVersionCatalogs.kotlin.namespace
+import com.faendir.intellij.gradleVersionCatalogs.kotlin.resolve
 import com.faendir.intellij.gradleVersionCatalogs.toml.cache.VersionsTomlPsiCache
 import com.faendir.intellij.gradleVersionCatalogs.toml.isVersionRef
 import com.faendir.intellij.gradleVersionCatalogs.toml.unquote
@@ -53,7 +54,7 @@ class VersionCatalogInlayHintsProvider : InlayHintsProvider<NoSettings> {
                                     }
                                     if (inlayText != null) {
                                         sink.addInlineElement(
-                                            element.textOffset + element.textLength,
+                                            element.textOffset + element.resolve().textLength,
                                             false,
                                             factory.roundWithBackgroundAndSmallInset(factory.smallText(inlayText)),
                                             false

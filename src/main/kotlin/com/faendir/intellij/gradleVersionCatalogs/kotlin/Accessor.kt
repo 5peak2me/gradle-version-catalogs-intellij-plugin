@@ -18,12 +18,18 @@ private const val PLUGIN_SUPPLIER = "org.gradle.api.internal.catalog.ExternalMod
 data class Accessor(val element: PsiElement, val id: String, val type: VCElementType) {
     companion object {
         fun find(element: PsiElement): Accessor? {
-            val references = if (element.lastChild.references.mapNotNull(PsiReference::resolve).isEmpty()) {
-                element.lastChild.firstChild.references
-            } else element.lastChild.references
+            val references = when {
+                element.isTomlVersionAndPluginRef -> {
+                    element.firstChild?.firstChild?.lastChild?.references.orEmpty()
+                }
+                element.lastChild.references.mapNotNull(PsiReference::resolve).isEmpty() -> {
+                    element.lastChild?.firstChild?.references.orEmpty()
+                }
+                else -> element.lastChild?.references.orEmpty()
+            }
             val returnType = references.map { it.resolve() }.firstIsInstanceOrNull<PsiMethod>()?.returnType ?: return null
             @Suppress("SpellCheckingInspection")
-            val segments by lazy { element.text.replace(Regex("\\s+"), "").split(".").drop(1)
+            val segments by lazy { element.resolve().text.replace(Regex("\\s+"), "").split(".").drop(1)
                 // e.g. libs.map.get3dmap() -> [libs, map, get3dmap()] -> [map, get3dmap()] -> [map, 3dmap]
                 .map {
                     it.applyIf(it.matches(Regex("^get.*\\(\\s*\\)\$"))) {
@@ -58,7 +64,7 @@ data class Accessor(val element: PsiElement, val id: String, val type: VCElement
 
         fun find2(element: PsiElement): Accessor? {
             @Suppress("SpellCheckingInspection")
-            val segments by lazy { element.text.replace(Regex("\\s+"), "").split(".").drop(1)
+            val segments by lazy { element.resolve().text.replace(Regex("\\s+"), "").split(".").drop(1)
                 // e.g. libs.map.get3dmap() -> [libs, map, get3dmap()] -> [map, get3dmap()] -> [map, 3dmap]
                 .map {
                     it.applyIf(it.matches(Regex("^get.*\\(\\s*\\)$"))) {

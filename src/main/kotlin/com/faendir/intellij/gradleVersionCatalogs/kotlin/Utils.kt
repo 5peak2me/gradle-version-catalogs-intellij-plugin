@@ -1,8 +1,8 @@
 package com.faendir.intellij.gradleVersionCatalogs.kotlin
 
-import com.google.common.base.CaseFormat
 import com.intellij.openapi.project.Project
 import com.intellij.openapi.vfs.VfsUtil
+import com.intellij.psi.PsiElement
 import com.intellij.psi.search.FilenameIndex
 import com.intellij.util.applyIf
 import com.intellij.util.io.exists
@@ -32,3 +32,13 @@ fun Project.findInVersionsTomlKeyValues(getKeyValues: (TomlFile) -> List<TomlKey
 
 internal inline val String.namespace: String
     get() = substringBefore('.')
+
+internal inline val PsiElement.isTomlVersionAndPluginRef: Boolean
+    get() = listOf(".versions.", ".plugins.").any { text.contains(it) }
+
+internal fun PsiElement.resolve(): PsiElement {
+    return when {
+        isTomlVersionAndPluginRef -> firstChild.firstChild
+        else -> this
+    }
+}
