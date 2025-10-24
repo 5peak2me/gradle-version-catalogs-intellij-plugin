@@ -1,43 +1,81 @@
 import org.apache.tools.ant.taskdefs.condition.Os
+import org.jetbrains.intellij.platform.gradle.TestFrameworkType
 import org.jetbrains.kotlin.gradle.dsl.JvmTarget
+import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
 
 plugins {
-    id("java")
-    id("org.jetbrains.kotlin.jvm") version "2.1.21"
-    id("org.jetbrains.intellij") version "1.17.4"
+    id("java") // Java support
+    alias(libs.plugins.kotlin) // Kotlin support
+    alias(libs.plugins.intelliJPlatform) // IntelliJ Platform Gradle Plugin
+    alias(libs.plugins.changelog) // Gradle Changelog Plugin
+    alias(libs.plugins.qodana) // Gradle Qodana Plugin
+    alias(libs.plugins.kover) // Gradle Kover Plugin
     id("fr.brouillard.oss.gradle.jgitver") version "0.10.0-rc03"
 }
 
-group = "com.5peak2me.plugin.idea"
+group = providers.gradleProperty("pluginGroup").get()
 
+// Set the JVM language level used to build the project.
+kotlin {
+    jvmToolchain(21)
+}
+
+// Configure project's dependencies
 repositories {
     mavenCentral()
+
+    // IntelliJ Platform Gradle Plugin Repositories Extension - read more: https://plugins.jetbrains.com/docs/intellij/tools-intellij-platform-gradle-plugin-repositories-extension.html
+    intellijPlatform {
+        defaultRepositories()
+    }
 }
 
-// Configure Gradle IntelliJ Plugin
-// Read more: https://plugins.jetbrains.com/docs/intellij/tools-gradle-intellij-plugin.html
-intellij {
-    version.set("2022.3.1")
-    type.set("IC")
+dependencies {
+    testImplementation(libs.junit)
 
-    plugins.set(
-        listOf(
-            "android",
-            "org.toml.lang",
-            "com.intellij.gradle",
-            "org.intellij.groovy",
-            "org.jetbrains.idea.reposearch",
-            "org.jetbrains.kotlin",
-            "com.intellij.java"
-        )
-    )
-}
+    intellijPlatform {
+//        create(
+//            providers.gradleProperty("platformType"),
+//            providers.gradleProperty("platformVersion"),
+//        )
 
-tasks {
-    runIde {
+        plugins(providers.gradleProperty("platformPlugins").map { it.split(',') })
+        bundledPlugins(providers.gradleProperty("platformBundledPlugins").map { it.split(',') })
+        testFramework(TestFrameworkType.Platform)
+
         if (Os.isFamily(Os.FAMILY_MAC)) {
-            // https://plugins.jetbrains.com/docs/intellij/android-studio.html
-            ideDir.set(file("/Applications/Android Studio.app/Contents"))
+            local("/Applications/Android Studio.app/Contents")
+        }
+        if (Os.isFamily(Os.FAMILY_WINDOWS)) {
+            local("C:\\Develop\\Android Studio")
+        }
+    }
+}
+
+// Configure IntelliJ Platform Gradle Plugin - read more: https://plugins.jetbrains.com/docs/intellij/tools-intellij-platform-gradle-plugin-extension.html
+intellijPlatform {
+    buildSearchableOptions = false
+    pluginConfiguration {
+        name = providers.gradleProperty("pluginName")
+
+        ideaVersion {
+            sinceBuild = providers.gradleProperty("pluginSinceBuild")
+        }
+    }
+
+    publishing {
+        token = providers.environmentVariable("PUBLISH_TOKEN")
+    }
+
+    signing {
+//        certificateChain = providers.environmentVariable("CERTIFICATE_CHAIN")
+//        privateKey = providers.environmentVariable("PRIVATE_KEY")
+//        password = providers.environmentVariable("PRIVATE_KEY_PASSWORD")
+    }
+
+    pluginVerification {
+        ides {
+            recommended()
         }
     }
 }
@@ -48,8 +86,10 @@ tasks {
         sourceCompatibility = "17"
         targetCompatibility = "17"
     }
-    withType<org.jetbrains.kotlin.gradle.tasks.KotlinCompile> {
-        compilerOptions.jvmTarget.set(JvmTarget.JVM_17)
+    withType<KotlinCompile> {
+        compilerOptions {
+            jvmTarget = JvmTarget.JVM_17
+        }
     }
 
     publishPlugin {
@@ -68,9 +108,26 @@ tasks {
         sinceBuild.set("223")
         untilBuild.set("")
     }
+}
 
-    listProductsReleases {
-        types.addAll("IC", "AI")
+intellijPlatformTesting {
+    runIde {
+        register("runIdeForUiTests") {
+            task {
+                jvmArgumentProviders += CommandLineArgumentProvider {
+                    listOf(
+                        "-Drobot-server.port=8082",
+                        "-Dide.mac.message.dialogs.as.sheets=false",
+                        "-Djb.privacy.policy.text=<!--999.999-->",
+                        "-Djb.consents.confirmation.enabled=false",
+                    )
+                }
+            }
+
+            plugins {
+                robotServerPlugin()
+            }
+        }
     }
 }
 

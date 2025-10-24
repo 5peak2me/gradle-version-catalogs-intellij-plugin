@@ -44,63 +44,63 @@
     <!-- Extension points defined by the plugin.
          Read more: https://plugins.jetbrains.com/docs/intellij/plugin-extension-points.html -->
     <extensions defaultExtensionNs="com.intellij">
-        <psi.referenceContributor language="TOML"
-                                  implementation="com.faendir.intellij.gradleVersionCatalogs.toml.referenceContributor.VersionReferenceContributor"/>
-        <psi.referenceContributor language="TOML"
-                                  implementation="com.faendir.intellij.gradleVersionCatalogs.toml.referenceContributor.LibraryReferenceContributor"/>
-        <completion.contributor language="TOML"
-                                implementationClass="com.faendir.intellij.gradleVersionCatalogs.toml.completion.VersionRefCompletionContributor"/>
-        <completion.contributor language="TOML"
-                                implementationClass="com.faendir.intellij.gradleVersionCatalogs.toml.completion.LibraryCompletionContributor"/>
-        <completion.contributor language="TOML"
-                                implementationClass="com.faendir.intellij.gradleVersionCatalogs.toml.completion.LibraryRefCompletionContributor"/>
-        <findUsagesHandlerFactory implementation="com.faendir.intellij.gradleVersionCatalogs.toml.CatalogDeclarationFindUsagesHandlerFactory"/>
-        <lang.elementManipulator forClass="org.toml.lang.psi.TomlKeySegment" implementationClass="com.faendir.intellij.gradleVersionCatalogs.toml.TomlKeySegmentManipulator"/>
-        <lang.elementManipulator forClass="org.jetbrains.kotlin.psi.KtDotQualifiedExpression"
-                                 implementationClass="com.faendir.intellij.gradleVersionCatalogs.kotlin.KtDotQualifiedExpressionManipulator"/>
-        <elementDescriptionProvider implementation="com.faendir.intellij.gradleVersionCatalogs.toml.CatalogElementDescriptionProvider"/>
-        <usageTypeProvider implementation="com.faendir.intellij.gradleVersionCatalogs.toml.TomlUsageTypeProvider"/>
-        <referencesSearch implementation="com.faendir.intellij.gradleVersionCatalogs.toml.usages.LibraryReferenceSearcher"/>
-        <referencesSearch implementation="com.faendir.intellij.gradleVersionCatalogs.toml.usages.PluginReferenceSearcher"/>
-        <referencesSearch implementation="com.faendir.intellij.gradleVersionCatalogs.toml.usages.VersionReferenceSearcher"/>
-        <referencesSearch implementation="com.faendir.intellij.gradleVersionCatalogs.toml.usages.BundleReferenceSearcher"/>
-        <localInspection language="TOML"
-                         displayName="Unused version declaration"
-                         groupPath="Gradle version catalog"
-                         groupBundle="messages.InspectionsBundle"
-                         groupKey="group.names.declaration.redundancy"
-                         enabledByDefault="true"
-                         level="WEAK WARNING"
-                         implementationClass="com.faendir.intellij.gradleVersionCatalogs.toml.inspection.UnusedVersionInGradleVersionCatalogInspection"
-        />
-        <localInspection language="TOML"
-                         displayName="Unused library declaration"
-                         groupPath="Gradle version catalog"
-                         groupBundle="messages.InspectionsBundle"
-                         groupKey="group.names.declaration.redundancy"
-                         enabledByDefault="true"
-                         level="WEAK WARNING"
-                         implementationClass="com.faendir.intellij.gradleVersionCatalogs.toml.inspection.UnusedLibraryInGradleVersionCatalogInspection"
-        />
-        <localInspection language="TOML"
-                         displayName="Unused plugin declaration"
-                         groupPath="Gradle version catalog"
-                         groupBundle="messages.InspectionsBundle"
-                         groupKey="group.names.declaration.redundancy"
-                         enabledByDefault="true"
-                         level="WEAK WARNING"
-                         implementationClass="com.faendir.intellij.gradleVersionCatalogs.toml.inspection.UnusedPluginInGradleVersionCatalogInspection"
-        />
-        <localInspection language="TOML"
-                         displayName="Unused bundle declaration"
-                         groupPath="Gradle version catalog"
-                         groupBundle="messages.InspectionsBundle"
-                         groupKey="group.names.declaration.redundancy"
-                         enabledByDefault="true"
-                         level="WEAK WARNING"
-                         implementationClass="com.faendir.intellij.gradleVersionCatalogs.toml.inspection.UnusedBundleInGradleVersionCatalogInspection"
-        />
-        <gotoDeclarationHandler implementation="com.faendir.intellij.gradleVersionCatalogs.kotlin.GotoCatalogDeclarationHandler"/>
+<!--        <psi.referenceContributor language="TOML"-->
+<!--                                  implementation="com.faendir.intellij.gradleVersionCatalogs.toml.referenceContributor.VersionReferenceContributor"/>-->
+<!--        <psi.referenceContributor language="TOML"-->
+<!--                                  implementation="com.faendir.intellij.gradleVersionCatalogs.toml.referenceContributor.LibraryReferenceContributor"/>-->
+<!--        <completion.contributor language="TOML"-->
+<!--                                implementationClass="com.faendir.intellij.gradleVersionCatalogs.toml.completion.VersionRefCompletionContributor"/>-->
+<!--        <completion.contributor language="TOML"-->
+<!--                                implementationClass="com.faendir.intellij.gradleVersionCatalogs.toml.completion.LibraryCompletionContributor"/>-->
+<!--        <completion.contributor language="TOML"-->
+<!--                                implementationClass="com.faendir.intellij.gradleVersionCatalogs.toml.completion.LibraryRefCompletionContributor"/>-->
+<!--        <findUsagesHandlerFactory implementation="com.faendir.intellij.gradleVersionCatalogs.toml.CatalogDeclarationFindUsagesHandlerFactory"/>-->
+<!--        <lang.elementManipulator forClass="org.toml.lang.psi.TomlKeySegment" implementationClass="com.faendir.intellij.gradleVersionCatalogs.toml.TomlKeySegmentManipulator"/>-->
+<!--        <lang.elementManipulator forClass="org.jetbrains.kotlin.psi.KtDotQualifiedExpression"-->
+<!--                                 implementationClass="com.faendir.intellij.gradleVersionCatalogs.kotlin.KtDotQualifiedExpressionManipulator"/>-->
+<!--        <elementDescriptionProvider implementation="com.faendir.intellij.gradleVersionCatalogs.toml.CatalogElementDescriptionProvider"/>-->
+<!--        <usageTypeProvider implementation="com.faendir.intellij.gradleVersionCatalogs.toml.TomlUsageTypeProvider"/>-->
+<!--        <referencesSearch implementation="com.faendir.intellij.gradleVersionCatalogs.toml.usages.LibraryReferenceSearcher"/>-->
+<!--        <referencesSearch implementation="com.faendir.intellij.gradleVersionCatalogs.toml.usages.PluginReferenceSearcher"/>-->
+<!--        <referencesSearch implementation="com.faendir.intellij.gradleVersionCatalogs.toml.usages.VersionReferenceSearcher"/>-->
+<!--        <referencesSearch implementation="com.faendir.intellij.gradleVersionCatalogs.toml.usages.BundleReferenceSearcher"/>-->
+<!--        <localInspection language="TOML"-->
+<!--                         displayName="Unused version declaration"-->
+<!--                         groupPath="Gradle version catalog"-->
+<!--                         groupBundle="messages.InspectionsBundle"-->
+<!--                         groupKey="group.names.declaration.redundancy"-->
+<!--                         enabledByDefault="true"-->
+<!--                         level="WEAK WARNING"-->
+<!--                         implementationClass="com.faendir.intellij.gradleVersionCatalogs.toml.inspection.UnusedVersionInGradleVersionCatalogInspection"-->
+<!--        />-->
+<!--        <localInspection language="TOML"-->
+<!--                         displayName="Unused library declaration"-->
+<!--                         groupPath="Gradle version catalog"-->
+<!--                         groupBundle="messages.InspectionsBundle"-->
+<!--                         groupKey="group.names.declaration.redundancy"-->
+<!--                         enabledByDefault="true"-->
+<!--                         level="WEAK WARNING"-->
+<!--                         implementationClass="com.faendir.intellij.gradleVersionCatalogs.toml.inspection.UnusedLibraryInGradleVersionCatalogInspection"-->
+<!--        />-->
+<!--        <localInspection language="TOML"-->
+<!--                         displayName="Unused plugin declaration"-->
+<!--                         groupPath="Gradle version catalog"-->
+<!--                         groupBundle="messages.InspectionsBundle"-->
+<!--                         groupKey="group.names.declaration.redundancy"-->
+<!--                         enabledByDefault="true"-->
+<!--                         level="WEAK WARNING"-->
+<!--                         implementationClass="com.faendir.intellij.gradleVersionCatalogs.toml.inspection.UnusedPluginInGradleVersionCatalogInspection"-->
+<!--        />-->
+<!--        <localInspection language="TOML"-->
+<!--                         displayName="Unused bundle declaration"-->
+<!--                         groupPath="Gradle version catalog"-->
+<!--                         groupBundle="messages.InspectionsBundle"-->
+<!--                         groupKey="group.names.declaration.redundancy"-->
+<!--                         enabledByDefault="true"-->
+<!--                         level="WEAK WARNING"-->
+<!--                         implementationClass="com.faendir.intellij.gradleVersionCatalogs.toml.inspection.UnusedBundleInGradleVersionCatalogInspection"-->
+<!--        />-->
+<!--        <gotoDeclarationHandler implementation="com.faendir.intellij.gradleVersionCatalogs.kotlin.GotoCatalogDeclarationHandler"/>-->
         <codeInsight.inlayProvider
                 language="kotlin"
                 implementationClass="com.faendir.intellij.gradleVersionCatalogs.kotlin.inlayhints.VersionCatalogInlayHintsProvider" />

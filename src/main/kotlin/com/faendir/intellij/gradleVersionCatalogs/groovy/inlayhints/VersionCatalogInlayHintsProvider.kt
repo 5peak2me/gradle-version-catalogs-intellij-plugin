@@ -13,7 +13,7 @@ import com.intellij.openapi.editor.Editor
 import com.intellij.psi.PsiElement
 import com.intellij.psi.PsiFile
 import com.intellij.psi.util.childrenOfType
-import org.jetbrains.plugins.gradle.config.isGradleFile
+//import org.jetbrains.plugins.gradle.config.isGradleFile
 import org.jetbrains.plugins.gradle.util.GradleConstants
 import org.jetbrains.plugins.groovy.lang.psi.api.statements.arguments.GrArgumentList
 import org.jetbrains.plugins.groovy.lang.psi.api.statements.expressions.GrReferenceExpression
@@ -31,13 +31,13 @@ class VersionCatalogInlayHintsProvider : InlayHintsProvider<NoSettings> {
     override fun createSettings(): NoSettings = NoSettings()
 
     override fun getCollectorFor(file: PsiFile, editor: Editor, settings: NoSettings, sink: InlayHintsSink): InlayHintsCollector? {
-        if (file.isGradleFile() && file.name == GradleConstants.DEFAULT_SCRIPT_NAME) {
+        if (/*file.isGradleFile() && */file.name == GradleConstants.DEFAULT_SCRIPT_NAME) {
             return object : FactoryInlayHintsCollector(editor) {
                 override fun collect(element: PsiElement, editor: Editor, sink: InlayHintsSink): Boolean {
                     if (element is GrReferenceExpression
                                 && (element.nextSibling == null || element.context is GrArgumentList)) {
                         val accessor = BuildGradleKtsPsiCache.findAccessor2(element)
-                        if (accessor != null/* && BuildGradleKtsPsiCache.findAccessor(element.parent) == null*/) {
+                        if (accessor != null && BuildGradleKtsPsiCache.findAccessor2(element.parent) == null) {
                             val referencedElement = element.project.findInVersionsTomlKeyValues(
                                 { VersionsTomlPsiCache.getDefinitions(it, accessor.type) },
                                 accessor.id

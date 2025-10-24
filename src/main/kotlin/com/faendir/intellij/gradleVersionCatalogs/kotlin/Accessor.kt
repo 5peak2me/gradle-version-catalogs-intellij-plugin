@@ -3,7 +3,6 @@ package com.faendir.intellij.gradleVersionCatalogs.kotlin
 import com.faendir.intellij.gradleVersionCatalogs.VCElementType
 import com.intellij.psi.*
 import org.jetbrains.kotlin.utils.addToStdlib.applyIf
-import org.jetbrains.kotlin.utils.addToStdlib.firstIsInstanceOrNull
 
 private const val PROVIDER = "org.gradle.api.provider.Provider"
 private const val LIBRARY_DEPENDENCY = "org.gradle.api.artifacts.MinimalExternalModuleDependency"
