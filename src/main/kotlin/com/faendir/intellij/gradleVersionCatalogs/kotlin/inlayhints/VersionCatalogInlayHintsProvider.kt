@@ -13,6 +13,7 @@ import com.intellij.openapi.editor.Editor
 import com.intellij.psi.PsiElement
 import com.intellij.psi.PsiFile
 import com.intellij.psi.util.childrenOfType
+import org.jetbrains.kotlin.psi.KtDotQualifiedExpression
 import org.jetbrains.kotlin.psi.KtFile
 import org.jetbrains.kotlin.psi.stubs.elements.KtDotQualifiedExpressionElementType
 import org.jetbrains.plugins.gradle.util.GradleConstants
@@ -34,9 +35,10 @@ class VersionCatalogInlayHintsProvider : InlayHintsProvider<NoSettings> {
         if (file is KtFile && file.name == GradleConstants.KOTLIN_DSL_SCRIPT_NAME) {
             return object : FactoryInlayHintsCollector(editor) {
                 override fun collect(element: PsiElement, editor: Editor, sink: InlayHintsSink): Boolean {
-                    if (element.elementType is KtDotQualifiedExpressionElementType && element.nextSibling == null) {
+                    if (element.elementType is KtDotQualifiedExpressionElementType) {
                         val accessor = BuildGradleKtsPsiCache.findAccessor(element)
-                        if (accessor != null && BuildGradleKtsPsiCache.findAccessor(element.parent) == null) {
+                        val parentAccessor = (element.parent as? KtDotQualifiedExpression)?.let { BuildGradleKtsPsiCache.findAccessor(it) }
+                        if (accessor != null && parentAccessor?.let { it.type == accessor.type && it.id == accessor.id } != true) {
                             val referencedElement = element.project.findInVersionsTomlKeyValues(
                                 { VersionsTomlPsiCache.getDefinitions(it, accessor.type) },
                                 accessor.id
