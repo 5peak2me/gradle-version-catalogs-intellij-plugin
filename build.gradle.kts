@@ -34,21 +34,20 @@ dependencies {
     testImplementation(libs.junit)
 
     intellijPlatform {
-//        create(
-//            providers.gradleProperty("platformType"),
-//            providers.gradleProperty("platformVersion"),
-//        )
+        when {
+            Os.isFamily(Os.FAMILY_WINDOWS) -> local("C:/Develop/Android Studio")
+            Os.isFamily(Os.FAMILY_MAC) -> local("/Applications/Android Studio.app/Contents")
+            else -> {
+                create(
+                    providers.gradleProperty("platformType"),
+                    providers.gradleProperty("platformVersion"),
+                )
+            }
+        }
 
         plugins(providers.gradleProperty("platformPlugins").map { it.split(',') })
         bundledPlugins(providers.gradleProperty("platformBundledPlugins").map { it.split(',') })
         testFramework(TestFrameworkType.Platform)
-
-        if (Os.isFamily(Os.FAMILY_MAC)) {
-            local("/Applications/Android Studio.app/Contents")
-        }
-        if (Os.isFamily(Os.FAMILY_WINDOWS)) {
-            local("C:\\Develop\\Android Studio")
-        }
     }
 }
 
@@ -106,7 +105,6 @@ tasks {
 
     patchPluginXml {
         sinceBuild.set("223")
-        untilBuild.set("")
     }
 }
 
