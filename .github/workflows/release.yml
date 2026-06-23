@@ -17,11 +17,11 @@ jobs:
           distribution: 'temurin'
           java-version: '17'
       - name: Checkout
-        uses: actions/checkout@v4
+        uses: actions/checkout@v4.3.1
         with:
           ref: ${{ github.ref }}
       - name: Publish
-        uses: burrunan/gradle-cache-action@v3
+        uses: burrunan/gradle-cache-action@v3.0.2
         with:
           arguments: publishPlugin
         env:
