@@ -3,7 +3,6 @@ package com.faendir.intellij.gradleVersionCatalogs.kotlin
 import com.faendir.intellij.gradleVersionCatalogs.VCElementType
 import com.intellij.psi.*
 import org.jetbrains.kotlin.utils.addToStdlib.applyIf
-import org.jetbrains.kotlin.utils.addToStdlib.firstIsInstanceOrNull
 
 private const val PROVIDER = "org.gradle.api.provider.Provider"
 private const val LIBRARY_DEPENDENCY = "org.gradle.api.artifacts.MinimalExternalModuleDependency"
@@ -18,16 +17,11 @@ private const val PLUGIN_SUPPLIER = "org.gradle.api.internal.catalog.ExternalMod
 data class Accessor(val element: PsiElement, val id: String, val type: VCElementType) {
     companion object {
         fun find(element: PsiElement): Accessor? {
-            val references = when {
-                element.isTomlVersionAndPluginRef -> {
-                    element.firstChild?.firstChild?.lastChild?.references.orEmpty()
-                }
-                element.lastChild.references.mapNotNull(PsiReference::resolve).isEmpty() -> {
-                    element.lastChild?.firstChild?.references.orEmpty()
-                }
-                else -> element.lastChild?.references.orEmpty()
-            }
-            val returnType = references.map { it.resolve() }.firstIsInstanceOrNull<PsiMethod>()?.returnType ?: return null
+            val returnType = element.referenceCandidates()
+                .flatMap { it.asSequence() }
+                .firstNotNullOfOrNull { it.resolve() as? PsiMethod }
+                ?.returnType
+                ?: return null
             @Suppress("SpellCheckingInspection")
             val segments by lazy { element.resolve().text.replace(Regex("\\s+"), "").split(".").drop(1)
                 // e.g. libs.map.get3dmap() -> [libs, map, get3dmap()] -> [map, get3dmap()] -> [map, 3dmap]
@@ -83,6 +77,13 @@ data class Accessor(val element: PsiElement, val id: String, val type: VCElement
         }
     }
 }
+
+private fun PsiElement.referenceCandidates(): Sequence<Array<PsiReference>> = sequenceOf(
+    lastChild?.references,
+    lastChild?.firstChild?.references,
+    firstChild?.lastChild?.references,
+    firstChild?.firstChild?.lastChild?.references,
+).filterNotNull()
 
 fun PsiType.extendsFrom(other: PsiType) = other.isAssignableFrom(this)
 
