@@ -2,6 +2,8 @@
 
 [![JetBrains Plugin Version](https://img.shields.io/jetbrains/plugin/v/25647-gradle-version-catalogs?label=Gradle%20Version%20Catalogs)](https://plugins.jetbrains.com/plugin/25647-gradle-version-catalogs)
 [![Downloads](https://img.shields.io/jetbrains/plugin/d/25647.svg)](https://plugins.jetbrains.com/plugin/25647)
+[![Kotlin](https://img.shields.io/badge/dynamic/toml?url=https://raw.githubusercontent.com/5peak2me/gradle-version-catalogs-intellij-plugin/v2/gradle/libs.versions.toml&query=$.versions.kotlin&label=Kotlin&color=blue&logo=kotlin)](https://kotlinlang.org)
+[![Gradle](https://img.shields.io/badge/dynamic/regex?url=https://raw.githubusercontent.com/5peak2me/gradle-version-catalogs-intellij-plugin/v2/gradle/wrapper/gradle-wrapper.properties&search=gradle-([0-9.]%2B)-(?:bin|all).zip&replace=$1&label=Gradle&color=blue&logo=gradle)](https://gradle.org)
 
 ### Forked from [gradle-version-catalogs-intellij-plugin](https://github.com/F43nd1r/gradle-version-catalogs-intellij-plugin)
 
