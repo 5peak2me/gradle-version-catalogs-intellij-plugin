@@ -15,7 +15,7 @@ jobs:
         uses: actions/setup-java@v5.6.0
         with:
           distribution: 'temurin'
-          java-version: '17'
+          java-version: '17.0.21+9'
       - name: Checkout
         uses: actions/checkout@v7.0.0
         with:
