@@ -44,9 +44,6 @@ dependencies {
                 )
             }
         }
-//        intellijIdea(providers.gradleProperty("platformVersion")) {
-//            useInstaller = false
-//        }
 
         plugins(providers.gradleProperty("platformPlugins").map { it.split(',') })
         bundledPlugins(providers.gradleProperty("platformBundledPlugins").map { it.split(',') })
