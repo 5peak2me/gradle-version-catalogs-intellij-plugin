@@ -15,14 +15,15 @@ jobs:
         uses: actions/setup-java@v6.2.0
         with:
           distribution: 'temurin'
-          java-version: '17'
+          java-version: '21'
       - name: Checkout
         uses: actions/checkout@v7.0.1
         with:
           ref: ${{ github.ref }}
-      - name: Publish
+      - name: Restore Gradle cache
         uses: burrunan/gradle-cache-action@v3.0.3
-        with:
-          arguments: publishPlugin
+        continue-on-error: true
+      - name: Publish
+        run: ./gradlew publishPlugin
         env:
           INTELLIJ_TOKEN: ${{ secrets.INTELLIJ_TOKEN }}

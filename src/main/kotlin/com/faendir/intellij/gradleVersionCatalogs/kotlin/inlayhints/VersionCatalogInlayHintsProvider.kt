@@ -39,6 +39,8 @@ class VersionCatalogInlayHintsProvider : InlayHintsProvider<NoSettings> {
                 override fun collect(element: PsiElement, editor: Editor, sink: InlayHintsSink): Boolean {
                     if (element.node.elementType == KtNodeTypes.DOT_QUALIFIED_EXPRESSION) {
                         val accessor = BuildGradleKtsPsiCache.findAccessor(element)
+                            ?: element.takeIf { it.parent !is KtDotQualifiedExpression }
+                                ?.let { BuildGradleKtsPsiCache.findAccessor2(it) }
                         val parentAccessor = (element.parent as? KtDotQualifiedExpression)?.let { BuildGradleKtsPsiCache.findAccessor(it) }
                         if (accessor != null && parentAccessor?.let { it.type == accessor.type && it.id == accessor.id } != true) {
                             val referencedElement = element.project.findInVersionsTomlKeyValues(
