@@ -1,7 +1,6 @@
 import org.apache.tools.ant.taskdefs.condition.Os
 import org.jetbrains.intellij.platform.gradle.TestFrameworkType
 import org.jetbrains.kotlin.gradle.dsl.JvmTarget
-import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
 
 plugins {
     id("java") // Java support
@@ -35,7 +34,8 @@ dependencies {
 
     intellijPlatform {
         when {
-            Os.isFamily(Os.FAMILY_WINDOWS) -> local("C:/Develop/Android Studio")
+            Os.isFamily(Os.FAMILY_WINDOWS) -> local("C:/Develop/JetBrains/IntelliJ IDEA")
+//            Os.isFamily(Os.FAMILY_WINDOWS) -> local("C:/Develop/Android Studio")
             Os.isFamily(Os.FAMILY_MAC) -> local("/Applications/Android Studio.app/Contents")
             else -> {
                 create(
@@ -44,6 +44,9 @@ dependencies {
                 )
             }
         }
+//        intellijIdea(providers.gradleProperty("platformVersion")) {
+//            useInstaller = false
+//        }
 
         plugins(providers.gradleProperty("platformPlugins").map { it.split(',') })
         bundledPlugins(providers.gradleProperty("platformBundledPlugins").map { it.split(',') })
@@ -81,11 +84,12 @@ intellijPlatform {
 
 tasks {
     // Set the JVM compatibility versions
-    withType<JavaCompile> {
-        sourceCompatibility = "17"
-        targetCompatibility = "17"
+    java {
+        sourceCompatibility = JavaVersion.VERSION_17
+        targetCompatibility = JavaVersion.VERSION_17
     }
-    withType<KotlinCompile> {
+
+    kotlin {
         compilerOptions {
             jvmTarget = JvmTarget.JVM_17
         }

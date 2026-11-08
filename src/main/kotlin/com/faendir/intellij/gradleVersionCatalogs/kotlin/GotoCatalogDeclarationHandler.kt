@@ -6,8 +6,7 @@ import com.intellij.codeInsight.navigation.actions.GotoDeclarationHandler
 import com.intellij.openapi.editor.Editor
 import com.intellij.psi.PsiElement
 import com.intellij.psi.util.PsiTreeUtil
-import org.jetbrains.kotlin.psi.stubs.elements.KtDotQualifiedExpressionElementType
-import org.toml.lang.psi.ext.elementType
+import org.jetbrains.kotlin.KtNodeTypes
 
 class GotoCatalogDeclarationHandler : GotoDeclarationHandler {
 
@@ -16,7 +15,7 @@ class GotoCatalogDeclarationHandler : GotoDeclarationHandler {
         if (sourceElement != null && sourceElement.containingFile.name.endsWith("gradle.kts") && project != null) {
             val expression = PsiTreeUtil.findFirstParent(sourceElement) {
                 try {
-                    it.elementType is KtDotQualifiedExpressionElementType
+                    it.node.elementType == KtNodeTypes.DOT_QUALIFIED_EXPRESSION
                 } catch (_: Exception) {
                     false
                 }

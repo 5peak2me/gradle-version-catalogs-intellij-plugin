@@ -20,8 +20,7 @@ data class Accessor(val element: PsiElement, val id: String, val type: VCElement
             val returnType = element.referenceCandidates()
                 .flatMap { it.asSequence() }
                 .firstNotNullOfOrNull { it.resolve() as? PsiMethod }
-                ?.returnType
-                ?: return null
+                ?.returnType ?: return null
             @Suppress("SpellCheckingInspection")
             val segments by lazy { element.text.replace(Regex("\\s+"), "").split(".").drop(1)
                 // e.g. libs.map.get3dmap() -> [libs, map, get3dmap()] -> [map, get3dmap()] -> [map, 3dmap]

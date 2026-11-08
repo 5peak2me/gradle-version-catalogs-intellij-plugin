@@ -35,9 +35,10 @@
     <depends>org.toml.lang</depends>
     <depends>com.intellij.gradle</depends>
     <!-- Only for file.isGradleFile() usage. -->
-    <depends>com.intellij.modules.gradle.java</depends>
+<!--    <depends>com.intellij.modules.gradle.java</depends>-->
     <depends>org.intellij.groovy</depends>
     <depends>org.jetbrains.idea.reposearch</depends>
+    <depends optional="true" config-file="maven-dependency.xml">org.jetbrains.idea.maven</depends>
     <depends>org.jetbrains.kotlin</depends>
     <depends>com.intellij.java</depends>
 

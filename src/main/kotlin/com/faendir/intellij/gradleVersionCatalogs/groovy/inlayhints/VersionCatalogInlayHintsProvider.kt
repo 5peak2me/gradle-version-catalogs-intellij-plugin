@@ -9,13 +9,13 @@ import com.faendir.intellij.gradleVersionCatalogs.toml.isVersionRef
 import com.faendir.intellij.gradleVersionCatalogs.toml.unquote
 import com.faendir.intellij.gradleVersionCatalogs.toml.vcElementType
 import com.intellij.codeInsight.hints.*
+import com.intellij.lang.Language
 import com.intellij.openapi.editor.Editor
 import com.intellij.psi.PsiElement
 import com.intellij.psi.PsiFile
 import com.intellij.psi.util.childrenOfType
 //import org.jetbrains.plugins.gradle.config.isGradleFile
 import org.jetbrains.plugins.gradle.util.GradleConstants
-import org.jetbrains.plugins.groovy.lang.psi.api.statements.arguments.GrArgumentList
 import org.jetbrains.plugins.groovy.lang.psi.api.statements.expressions.GrReferenceExpression
 import org.toml.lang.psi.*
 import javax.swing.JPanel
@@ -30,14 +30,16 @@ class VersionCatalogInlayHintsProvider : InlayHintsProvider<NoSettings> {
 
     override fun createSettings(): NoSettings = NoSettings()
 
+    override fun getSettingsLanguage(language: Language): Language = language
+
     override fun getCollectorFor(file: PsiFile, editor: Editor, settings: NoSettings, sink: InlayHintsSink): InlayHintsCollector? {
         if (/*file.isGradleFile() && */file.name == GradleConstants.DEFAULT_SCRIPT_NAME) {
             return object : FactoryInlayHintsCollector(editor) {
                 override fun collect(element: PsiElement, editor: Editor, sink: InlayHintsSink): Boolean {
-                    if (element is GrReferenceExpression
-                                && (element.nextSibling == null || element.context is GrArgumentList)) {
+                    if (element is GrReferenceExpression) {
                         val accessor = BuildGradleKtsPsiCache.findAccessor2(element)
-                        if (accessor != null && BuildGradleKtsPsiCache.findAccessor2(element.parent) == null) {
+                        val parentAccessor = (element.parent as? GrReferenceExpression)?.let { BuildGradleKtsPsiCache.findAccessor2(it) }
+                        if (accessor != null && parentAccessor == null) {
                             val referencedElement = element.project.findInVersionsTomlKeyValues(
                                 { VersionsTomlPsiCache.getDefinitions(it, accessor.type) },
                                 accessor.id

@@ -60,6 +60,73 @@ class VersionCatalogInlayHintsProviderTest : InlayHintsProviderTestCase() {
         assertEquals(1, Regex("junit:junit:4\\.13\\.2").findAll(textWithInlays).count())
     }
 
+    fun testNestedLibraryAccessorHintOnlyShowsOnOutermostAccessor() {
+        addGradleApiStubs()
+        myFixture.addFileToProject(
+            "src/main/java/Libs.java",
+            """
+            import org.gradle.api.artifacts.MinimalExternalModuleDependency;
+            import org.gradle.api.provider.Provider;
+
+            public class Libs {
+                public ComposeAccessors getCompose() {
+                    return null;
+                }
+            }
+
+            class ComposeAccessors {
+                public UiAccessors getUi() {
+                    return null;
+                }
+            }
+
+            class UiAccessors implements Provider<MinimalExternalModuleDependency> {
+                public ToolingAccessors getTooling() {
+                    return null;
+                }
+            }
+
+            class ToolingAccessors implements Provider<MinimalExternalModuleDependency> {
+                public Provider<MinimalExternalModuleDependency> getPreview() {
+                    return null;
+                }
+            }
+            """.trimIndent()
+        )
+        myFixture.addFileToProject(
+            "gradle/libs.versions.toml",
+            """
+            [libraries]
+            compose-ui = "androidx.compose.ui:ui:1.11.3"
+            compose-ui-tooling = "androidx.compose.ui:ui-tooling:1.11.3"
+            compose-ui-tooling-preview = "androidx.compose.ui:ui-tooling-preview:1.11.3"
+            """.trimIndent()
+        )
+
+        val source = """
+            val libs = Libs()
+
+            dependencies {
+                implementation(libs.compose.ui.tooling.preview)
+            }
+
+            fun dependencies(block: Dependencies.() -> Unit) {}
+
+            class Dependencies {
+                fun implementation(dependency: Any?) {}
+            }
+            """.trimIndent()
+
+        myFixture.configureByText("build.gradle.kts", source)
+
+        val textWithInlays = dumpInlayHints(source, VersionCatalogInlayHintsProvider())
+
+        assertTrue(textWithInlays, textWithInlays.contains("androidx.compose.ui:ui-tooling-preview:1.11.3"))
+        assertEquals(1, Regex("androidx\\.compose\\.ui:ui-tooling-preview:1\\.11\\.3").findAll(textWithInlays).count())
+        assertFalse(textWithInlays, textWithInlays.contains("androidx.compose.ui:ui:1.11.3"))
+        assertFalse(textWithInlays, textWithInlays.contains("androidx.compose.ui:ui-tooling:1.11.3"))
+    }
+
     private fun addGradleApiStubs() {
         myFixture.addFileToProject(
             "src/main/kotlin/org/gradle/api/provider/Provider.kt",
